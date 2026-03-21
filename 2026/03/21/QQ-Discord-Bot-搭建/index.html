@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="参考: https:&#x2F;&#x2F;catarium.me&#x2F;posts&#x2F;20251031 部署前准备确保Python版本&gt;&#x3D;3.9（如果要使用GsCore，则推荐&gt;&#x3D;3.12，但不建议3.13） QQ协议端——NapCat (需要QQNT客户端)Windows: NapCat下载:Releases · NapNeko&#x2F;NapCatQQ 下载NapCat.Shell.z">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于NapCat+Nonebot2的QQ+Discord Bot 搭建">
+<meta property="og:url" content="https://axis5hacker.github.io/2026/03/21/QQ-Discord-Bot-%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:site_name" content="AXIS5&#39;s personal website">
+<meta property="og:description" content="参考: https:&#x2F;&#x2F;catarium.me&#x2F;posts&#x2F;20251031 部署前准备确保Python版本&gt;&#x3D;3.9（如果要使用GsCore，则推荐&gt;&#x3D;3.12，但不建议3.13） QQ协议端——NapCat (需要QQNT客户端)Windows: NapCat下载:Releases · NapNeko&#x2F;NapCatQQ 下载NapCat.Shell.z">
+<meta property="og:locale">
+<meta property="og:image" content="https://axis5hacker.github.io/img/404.jpg">
+<meta property="article:published_time" content="2026-03-21T13:20:54.000Z">
+<meta property="article:modified_time" content="2026-03-21T15:47:00.856Z">
+<meta property="article:author" content="AXIS5">
+<meta property="article:tag" content="bot, QQbot, nonebot2, python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://axis5hacker.github.io/img/404.jpg">
+
+
+<title >基于NapCat+Nonebot2的QQ+Discord Bot 搭建</title>
+
+<!-- Favicon -->
+
+    <link href='/img/favicon.svg?v=2.2.7' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/img/favicon.svg?v=2.2.7' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"axis5hacker.github.io","author":"AXIS5","root":"/","typed_text":["AXIS5","an amateur programmer","Dynamix Fanmade Charter","Weirdcore lover","a video uploader on Bilibili","a UPRPRC elite member","Dynamix Explode Admin","a student in Cyber Security fields"],"theme_version":"2.2.7","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"/avatar/Chibi.png","icon16":"/img/favicon.svg","icon32":"/img/favicon.svg","apple_touch_icon":null,"webmanifest":null,"visibilitychange":false,"hidden":"/failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","dark_logo":"/avatar/pain100.jpg"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":true},"live_time":{"start_time":"","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2026-03-21 23:47:00"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.7" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+ 
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" class=" trm-light-icon" src="/avatar/Chibi.png"> <img alt="logo" class=" trm-dark-icon" src="/avatar/pain100.jpg">
+    
+    
+        <div class="trm-logo-text">
+            AXIS<span>5</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/gallery/all/" target="">
+                    我的图片
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/charts/" target="">
+                    谱面集
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    存档
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/62705530-bkg.jpg">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            NEWS LETTER
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            基于NapCat+Nonebot2的QQ+Discord Bot 搭建
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2026
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div class="trm-page-sidebar col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    <div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card"> 
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/avatar/%E5%A4%A7%E5%A4%B4.png">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        AXIS5
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/AXIS5hacker" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+        <a href="https://space.bilibili.com/378865591" title="Bilibili" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-youtube"></i>
+        </a>
+    
+        <a href="/" title="otto" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-accessible-icon"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                RESIDENCE:
+            </div>
+            <div class="trm-label trm-label-light">
+                China
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                AGE:
+            </div>
+            <div class="trm-label trm-label-light">
+                24
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:axis5_secret@163.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div class="trm-page-content col-lg-8">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            03/21
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            21:20
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            AXIS5
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <p>参考: <a target="_blank" rel="noopener" href="https://catarium.me/posts/20251031">https://catarium.me/posts/20251031</a></p>
+<h1 id="部署前准备"><a href="#部署前准备" class="headerlink" title="部署前准备"></a>部署前准备</h1><p>确保Python版本&gt;&#x3D;3.9（如果要使用GsCore，则推荐&gt;&#x3D;3.12，但不建议3.13）</p>
+<h1 id="QQ协议端——NapCat-需要QQNT客户端"><a href="#QQ协议端——NapCat-需要QQNT客户端" class="headerlink" title="QQ协议端——NapCat (需要QQNT客户端)"></a>QQ协议端——NapCat (需要QQNT客户端)</h1><p>Windows:</p>
+<p>NapCat下载:<a target="_blank" rel="noopener" href="https://github.com/NapNeko/NapCatQQ/releases">Releases · NapNeko&#x2F;NapCatQQ</a></p>
+<p>下载NapCat.Shell.zip</p>
+<p>启动: 目录下launcher.bat QQ号</p>
+<h1 id="Nonebot2"><a href="#Nonebot2" class="headerlink" title="Nonebot2"></a>Nonebot2</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">python -m pip install --user pipx</span><br><span class="line">python -m pipx ensurepath <span class="comment"># 如果无法执行ensurepath需要手动把pipx所在地址添加到系统环境变量Path中</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 新开一个终端。安装nb-cli。</span></span><br><span class="line">pipx install nb-cli</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建bot"><a href="#创建bot" class="headerlink" title="创建bot"></a>创建bot</h2><p><code>nb create</code></p>
+<p>然后一步步选择:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"> # 选择bootstrap模板</span><br><span class="line">[?] Select a template to use: (Use ↑ and ↓ to choose, Enter to submit)</span><br><span class="line">&gt; bootstrap (for beginner or user)</span><br><span class="line"></span><br><span class="line"># 填写Bot项目名，也是Bot文件夹名</span><br><span class="line">[?] Project Name: </span><br><span class="line"></span><br><span class="line"># 选择OneBot V11协议</span><br><span class="line">[?] Which adapter(s) would you like to use? </span><br><span class="line">○ OneBot V11 (OneBot V11 协议)</span><br><span class="line">○ Discord (Discord 适配)</span><br><span class="line"></span><br><span class="line"># 选择驱动器FastAPI + HTTPX + websockets</span><br><span class="line">[?] Which driver(s) would you like to use? </span><br><span class="line">○ FastAPI (FastAPI 驱动器)</span><br><span class="line">○ HTTPX (HTTPX 驱动器)</span><br><span class="line">○ websockets (websockets 驱动器)</span><br><span class="line"></span><br><span class="line"># 输入Y安装依赖，创建虚拟环境</span><br><span class="line">[?] Install dependencies now? (Y/n)</span><br><span class="line">[?] Create virtual environment? (Y/n)</span><br><span class="line"></span><br><span class="line"># 选择默认插件是否安装</span><br><span class="line">[?] Which builtin plugin(s) would you like to use?</span><br><span class="line">○ echo</span><br><span class="line">○ single_session</span><br></pre></td></tr></table></figure>
+
+<p>然后切到bot项目根目录即可运行Bot:</p>
+<p><code>nb start --reload</code></p>
+<h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><p>bot的环境配置由.env这一文件及其下属文件.env.{$ENVIRONMENT}文件进行指定。</p>
+<p>其中ENVIRONMENT这个变量在.env中写，默认值为prod(即默认读取.env.prod文件作为配置)</p>
+<p>.env和.env.{$ENVIRONMENT}中的配置会同时生效，但.env.{$ENVIRONMENT}中的配置会覆盖掉.env中的同名配置</p>
+<p>一般的.env中的基本配置项如下 :</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># NoneBot2 运行所使用的驱动器，文件默认一般只有这一行</span></span><br><span class="line"><span class="comment"># 见 https://nonebot.dev/docs/next/advanced/driver</span></span><br><span class="line">DRIVER=~fastapi+~httpx+~websockets</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重定向 localstore 插件的存储路径，便于后续迁移 Bot</span></span><br><span class="line">LOCALSTORE_CACHE_DIR=data/nonebot/cache</span><br><span class="line">LOCALSTORE_CONFIG_DIR=data/nonebot/config</span><br><span class="line">LOCALSTORE_DATA_DIR=data/nonebot/data</span><br><span class="line"></span><br><span class="line"><span class="comment"># LogPile 日志文件保存路径</span></span><br><span class="line"><span class="comment"># LOGPILE_PATH=./log</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># LogPile 日志输出等级，可以为列表</span></span><br><span class="line">LOGPILE_LEVEL=INFO</span><br><span class="line"></span><br><span class="line"><span class="comment"># LogPile 日志保留天数</span></span><br><span class="line"><span class="comment"># LOGPILE_RETENTION=14</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### NoneBot 配置项 ###</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 机器人超级用户</span></span><br><span class="line"><span class="comment"># 超级用户拥有对 Bot 的最高权限</span></span><br><span class="line">SUPERUSERS=[<span class="string">&quot;&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 机器人的昵称</span></span><br><span class="line"><span class="comment"># 消息以机器人昵称开头可以代替艾特</span></span><br><span class="line">NICKNAME=[<span class="string">&quot;&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># ENVIRONMENT子环境配置(即.env.&#123;$ENVIRONMENT&#125;), 该配置项应存在于.env文件中</span></span><br><span class="line">ENVIRONMENT=prod</span><br><span class="line"></span><br><span class="line"><span class="comment"># 命令起始字符</span></span><br><span class="line"><span class="comment"># 一般只有 on_command 匹配规则适用</span></span><br><span class="line"><span class="comment"># 如果有一个指令为 查询，当该配置项为 [&quot;/&quot;] 时使用 /查询 才能够触发</span></span><br><span class="line">COMMAND_START=[<span class="string">&quot;&quot;</span>, <span class="string">&quot;/&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 命令分割字符</span></span><br><span class="line"><span class="comment"># 一般用于二级指令（不常见）</span></span><br><span class="line">COMMAND_SEP=[<span class="string">&quot;.&quot;</span>, <span class="string">&quot; &quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># NoneBot2 监听的 IP 或 主机名</span></span><br><span class="line"><span class="comment"># 如果要对公网开放，请改成 0.0.0.0</span></span><br><span class="line">HOST=<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="comment"># NoneBot2 监听的端口</span></span><br><span class="line"><span class="comment"># 请保证该端口号与连接端配置相同 或与端口映射配置相关</span></span><br><span class="line">PORT=<span class="number">8080</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># NoneBot2 日志输出等级, 为了便于查错可换为DEBUG</span></span><br><span class="line">LOG_LEVEL=INFO</span><br><span class="line"></span><br><span class="line"><span class="comment">### OneBot 适配器配置 ###</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># OneBot Access Token 配置</span></span><br><span class="line"><span class="comment"># ONEBOT_ACCESS_TOKEN=你的访问令牌</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># OneBot V11 Secret 配置</span></span><br><span class="line"><span class="comment"># ONEBOT_SECRET=你的签名</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># OneBot V11 正向 Universal WebSocket 配置</span></span><br><span class="line"><span class="comment"># 参考 https://onebot.adapters.nonebot.dev/docs/guide/setup#%E6%AD%A3%E5%90%91-websocket-%E8%BF%9E%E6%8E%A5</span></span><br><span class="line"><span class="comment"># 请确保你的 NoneBot 使用的是 ForwardDriver，否则无法使用此连接方式。</span></span><br><span class="line"><span class="comment"># ONEBOT_WS_URLS=[&quot;ws://127.0.0.1:5700&quot;]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># OneBot V11 HTTP POST 配置</span></span><br><span class="line"><span class="comment"># 参考 https://onebot.adapters.nonebot.dev/docs/guide/setup#http-post</span></span><br><span class="line"><span class="comment"># 请确保你的 NoneBot 使用的是 ForwardDriver 和 ReverseDriver，否则无法使用此连接方式。</span></span><br><span class="line"><span class="comment"># ONEBOT_API_ROOTS=&#123;&quot;Bot QQ号&quot;: &quot;http://127.0.0.1:5700/&quot;&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># OneBot V12 正向 WebSocket 配置</span></span><br><span class="line"><span class="comment"># 参考 https://onebot.adapters.nonebot.dev/docs/guide/setup#%E6%AD%A3%E5%90%91-websocket-%E8%BF%9E%E6%8E%A5-1</span></span><br><span class="line"><span class="comment"># 请确保你的 NoneBot 使用的是 ForwardDriver，否则无法使用此连接方式。</span></span><br><span class="line"><span class="comment"># ONEBOT_V12_WS_URLS=[&quot;ws://127.0.0.1:5700&quot;]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># OneBot V12 HTTP Webhook 配置</span></span><br><span class="line"><span class="comment"># 参考 https://onebot.adapters.nonebot.dev/docs/guide/setup#http-webhook</span></span><br><span class="line"><span class="comment"># 请确保你的 NoneBot 使用的是 ForwardDriver 和 ReverseDriver，否则无法使用此连接方式。</span></span><br><span class="line"><span class="comment"># ONEBOT_V12_API_ROOTS=&#123;&quot;Bot QQ号&quot;: &quot;http://127.0.0.1:5700/&quot;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="使用插件"><a href="#使用插件" class="headerlink" title="使用插件"></a>使用插件</h2><p>在插件商店中寻找需要的插件，展开插件详情——复制安装命令，在Bot项目目录下执行，然后重启nb。部分插件需要在<code>.env.prod</code>进行额外配置，具体请查看每个插件的文档说明。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">nb plugin install &lt;插件包名&gt;</span><br><span class="line">nb plugin uninstall &lt;插件包名&gt;</span><br><span class="line">nb plugin update &lt;插件包名&gt;</span><br><span class="line"></span><br><span class="line">::或是调出nonebot菜单</span><br><span class="line">nb plugin</span><br><span class="line"></span><br><span class="line">::管理nonebot适配器:</span><br><span class="line">nb adapter</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">::管理nonebot驱动器器:</span><br><span class="line">nb driver</span><br></pre></td></tr></table></figure>
+
+<h2 id="对接NapCat"><a href="#对接NapCat" class="headerlink" title="对接NapCat"></a>对接NapCat</h2><p>nb默认启用反向WS。确保<code>.env</code>文件中已配置HOST和PORT两个配置项</p>
+<p>然后在NapCat目录中(NapCat.Shell)打开<code>/config/webui.json</code> 找到端口和Token:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;host&quot;: &quot;::&quot;,</span><br><span class="line">&quot;port&quot;: ,</span><br><span class="line">&quot;token&quot;: </span><br></pre></td></tr></table></figure>
+
+<p>然后打开NapCat WebUI 链接，切到网络配置并新建:<br><img src="/resources/QQbot-Napcat.png"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'><br>图中HOST和PORT与.env中的监听配置要一致</p>
+<h2 id="对接Discord"><a href="#对接Discord" class="headerlink" title="对接Discord"></a>对接Discord</h2><p>连接到Discord时，需要下述配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">DISCORD_BOTS=&#x27;</span><br><span class="line">[</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;token&quot;: (Discord APP Token),</span><br><span class="line">    &quot;intent&quot;: &#123;</span><br><span class="line">      &quot;guild_messages&quot;: true,</span><br><span class="line">      &quot;direct_messages&quot;: true</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;application_commands&quot;: &#123;&quot;*&quot;: [&quot;*&quot;]&#125;</span><br><span class="line">  &#125;</span><br><span class="line">]</span><br><span class="line">&#x27;</span><br><span class="line"></span><br><span class="line"># application_commands的&#123;&quot;*&quot;: [&quot;*&quot;]&#125;代表将全部应用命令注册为全局应用命令</span><br><span class="line"># &#123;&quot;admin&quot;: [&quot;123&quot;, &quot;456&quot;]&#125;则代表将admin命令注册为id是123、456服务器的局部命令，其余命令不注册</span><br><span class="line"></span><br><span class="line">DISCORD_API_VERSION=10</span><br><span class="line"># Discord API 版本，默认为 10</span><br><span class="line"></span><br><span class="line">DISCORD_API_TIMEOUT=15.0</span><br><span class="line"># Discord API 超时时间，默认为 30 秒</span><br><span class="line"></span><br><span class="line">DISCORD_HANDLE_SELF_MESSAGE=True</span><br><span class="line">#是否处理自己发送的消息，默认为 False</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>token需要从 <a target="_blank" rel="noopener" href="https://discord.com/developers/home">主页 | Discord 开发者门户</a> 的APP-&gt;机器人中获取</p>
+<h2 id="依赖管理-PDM"><a href="#依赖管理-PDM" class="headerlink" title="依赖管理(PDM)"></a>依赖管理(PDM)</h2><p>在bot项目根目录中执行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pdm init</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-blog-card trm-scroll-animation">
+        <a href="/2026/03/21/Bot%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/" class="trm-cover-frame trm-anima-link">
+            
+            
+                <img alt="cover" class="no-fancybox" src="https://nonebot.dev/logo.png">
+            
+        </a>
+        
+        <div class="trm-card-descr">
+            <div class="trm-label trm-category trm-mb-20">
+                <a href=" /categories/codes/">
+                    codes
+                </a>
+            </div>
+            <h5>
+                <a href="/2026/03/21/Bot%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/" class="trm-anima-link">
+                    Bot插件依赖注意事项
+                </a>
+            </h5>
+            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>26/03/21</li>
+                <li>22:31</li>
+                
+                
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-blog-card trm-scroll-animation">
+        <a href="/2025/07/25/%E5%8F%88%E6%98%AF%E6%96%B0%E7%9A%84%E4%B8%80%E6%89%B9%E6%B6%A9%E5%9B%BE/" class="trm-cover-frame trm-anima-link">
+            
+            
+                <img alt="cover" class="no-fancybox" src="/pic/70059505_p0.jpg">
+            
+        </a>
+        
+        <div class="trm-card-descr">
+            <div class="trm-label trm-category trm-mb-20">
+                <a href=" /categories/pictures/">
+                    pictures
+                </a>
+            </div>
+            <h5>
+                <a href="/2025/07/25/%E5%8F%88%E6%98%AF%E6%96%B0%E7%9A%84%E4%B8%80%E6%89%B9%E6%B6%A9%E5%9B%BE/" class="trm-anima-link">
+                    又是新的一批涩图
+                </a>
+            </h5>
+            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>25/07/25</li>
+                <li>21:32</li>
+                
+                
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v7.3.0
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                主题 - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.2.7
+            </span>
+        </div>
+      
+
+     
+
+     
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+            
+<div class="trm-fixed-container">
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.2.7"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.2.7"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>
