@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="启用pre-commit下载pre-commit即可 1pip install pre-commit  pre-commit工作原理git commit → 触发 .git&#x2F;hooks&#x2F;pre-commit → 运行检查 → 通过则提交，失败则阻止 初始化配置12345678910# 生成示例配置文件pre-commit sample-config &gt; .pre-comm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pre-commit工作流">
+<meta property="og:url" content="https://axis5hacker.github.io/2026/04/05/pre-commit%E5%B7%A5%E4%BD%9C%E6%B5%81/index.html">
+<meta property="og:site_name" content="AXIS5&#39;s personal website">
+<meta property="og:description" content="启用pre-commit下载pre-commit即可 1pip install pre-commit  pre-commit工作原理git commit → 触发 .git&#x2F;hooks&#x2F;pre-commit → 运行检查 → 通过则提交，失败则阻止 初始化配置12345678910# 生成示例配置文件pre-commit sample-config &gt; .pre-comm">
+<meta property="og:locale">
+<meta property="article:published_time" content="2026-04-04T17:51:58.000Z">
+<meta property="article:modified_time" content="2026-04-04T18:20:22.587Z">
+<meta property="article:author" content="AXIS5">
+<meta property="article:tag" content="git, github, pre-commit">
+<meta name="twitter:card" content="summary">
+
+
+<title >pre-commit工作流</title>
+
+<!-- Favicon -->
+
+    <link href='/img/favicon.svg?v=2.2.7' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/img/favicon.svg?v=2.2.7' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"axis5hacker.github.io","author":"AXIS5","root":"/","typed_text":["AXIS5","an amateur programmer","Dynamix Fanmade Charter","Weirdcore lover","a video uploader on Bilibili","a UPRPRC elite member","Dynamix Explode Admin","a student in Cyber Security fields"],"theme_version":"2.2.7","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"/avatar/Chibi.png","icon16":"/img/favicon.svg","icon32":"/img/favicon.svg","apple_touch_icon":null,"webmanifest":null,"visibilitychange":false,"hidden":"/failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","dark_logo":"/avatar/pain100.jpg"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":true},"live_time":{"start_time":"","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2026-04-05 02:20:22"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.7" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+ 
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" class=" trm-light-icon" src="/avatar/Chibi.png"> <img alt="logo" class=" trm-dark-icon" src="/avatar/pain100.jpg">
+    
+    
+        <div class="trm-logo-text">
+            AXIS<span>5</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/gallery/all/" target="">
+                    我的图片
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/charts/" target="">
+                    谱面集
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    存档
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/62705530-bkg.jpg">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            NEWS LETTER
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            pre-commit工作流
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2026
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div class="trm-page-sidebar col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    <div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card"> 
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/avatar/%E5%A4%A7%E5%A4%B4.png">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        AXIS5
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/AXIS5hacker" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+        <a href="https://space.bilibili.com/378865591" title="Bilibili" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-youtube"></i>
+        </a>
+    
+        <a href="/" title="otto" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-accessible-icon"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                RESIDENCE:
+            </div>
+            <div class="trm-label trm-label-light">
+                China
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                AGE:
+            </div>
+            <div class="trm-label trm-label-light">
+                24
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:axis5_secret@163.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div class="trm-page-content col-lg-8">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            04/05
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            01:51
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            AXIS5
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="启用pre-commit"><a href="#启用pre-commit" class="headerlink" title="启用pre-commit"></a>启用pre-commit</h1><p>下载pre-commit即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pre-commit</span><br></pre></td></tr></table></figure>
+
+<h2 id="pre-commit工作原理"><a href="#pre-commit工作原理" class="headerlink" title="pre-commit工作原理"></a>pre-commit工作原理</h2><p>git commit → 触发 .git&#x2F;hooks&#x2F;pre-commit → 运行检查 → 通过则提交，失败则阻止</p>
+<h2 id="初始化配置"><a href="#初始化配置" class="headerlink" title="初始化配置"></a>初始化配置</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 生成示例配置文件</span><br><span class="line">pre-commit sample-config &gt; .pre-commit-config.yaml</span><br><span class="line"></span><br><span class="line"># 安装 Git 钩子</span><br><span class="line">pre-commit install</span><br><span class="line"></span><br><span class="line"># 安装所有类型的钩子</span><br><span class="line">pre-commit install --hook-type pre-commit</span><br><span class="line">pre-commit install --hook-type pre-push</span><br><span class="line">pre-commit install --hook-type commit-msg</span><br></pre></td></tr></table></figure>
+
+<h2 id="hook类型"><a href="#hook类型" class="headerlink" title="hook类型"></a>hook类型</h2><p>默认 <code>pre-commit install</code> 只安装 <code>pre-commit</code> 钩子。如果你想在其他 Git 阶段运行检查，需要显式安装。</p>
+<table>
+<thead>
+<tr>
+<th>钩子类型</th>
+<th>触发时机</th>
+<th>典型用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>pre-commit</code></td>
+<td><code>git commit</code> 前</td>
+<td>代码格式化、lint 检查</td>
+</tr>
+<tr>
+<td><code>pre-push</code></td>
+<td><code>git push</code> 前</td>
+<td>运行测试、安全检查</td>
+</tr>
+<tr>
+<td><code>commit-msg</code></td>
+<td>提交消息写入后</td>
+<td>校验提交消息格式</td>
+</tr>
+<tr>
+<td><code>pre-merge-commit</code></td>
+<td>合并前</td>
+<td>检查合并冲突</td>
+</tr>
+<tr>
+<td><code>post-checkout</code></td>
+<td><code>git checkout</code> 后</td>
+<td>环境初始化</td>
+</tr>
+<tr>
+<td><code>post-commit</code></td>
+<td>提交完成后</td>
+<td>通知、日志记录</td>
+</tr>
+<tr>
+<td><code>post-merge</code></td>
+<td>合并完成后</td>
+<td>依赖更新检查</td>
+</tr>
+<tr>
+<td><code>prepare-commit-msg</code></td>
+<td>编辑提交消息前</td>
+<td>自动生成提交消息模板</td>
+</tr>
+</tbody></table>
+<h1 id="pre-commit-config-yaml配置"><a href="#pre-commit-config-yaml配置" class="headerlink" title=".pre-commit-config.yaml配置"></a>.pre-commit-config.yaml配置</h1><p>pre-commit是由项目根目录的.pre-commit-config.yaml来配置的。你可以添加一系列钩子函数。有些仓库提供钩子函数，可供使用。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 指定各语言的默认版本</span></span><br><span class="line"><span class="attr">default_language_version:</span></span><br><span class="line">  <span class="attr">python:</span> <span class="string">python3.11</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 默认阶段：定义所有 hooks 默认在哪个 Git 钩子阶段运行</span></span><br><span class="line"><span class="attr">default_stages:</span> [<span class="string">pre-commit</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第一个 hook 失败后是否停止运行后续 hooks</span></span><br><span class="line"><span class="attr">fail_fast:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="attr">repos:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">repo:</span> <span class="string">https://github.com/pre-commit/pre-commit-hooks</span></span><br><span class="line">    <span class="attr">rev:</span> <span class="string">v4.4.0</span> <span class="comment">#版本自行修改</span></span><br><span class="line">    <span class="attr">hooks:</span></span><br><span class="line">    <span class="bullet">-</span>   <span class="attr">id:</span> <span class="string">trailing-whitespace</span></span><br><span class="line">    <span class="bullet">-</span>   <span class="attr">id:</span> <span class="string">end-of-file-fixer</span></span><br><span class="line">    <span class="bullet">-</span>   <span class="attr">id:</span> <span class="string">check-yaml</span></span><br><span class="line">    <span class="bullet">-</span>   <span class="attr">id:</span> <span class="string">check-added-large-files</span></span><br><span class="line"><span class="comment"># black 代码格式化器</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">repo:</span> <span class="string">https://github.com/psf/black</span></span><br><span class="line">    <span class="attr">rev:</span> <span class="number">26.3</span><span class="number">.1</span> <span class="comment">#版本自行修改</span></span><br><span class="line">    <span class="attr">hooks:</span></span><br><span class="line">    <span class="bullet">-</span>   <span class="attr">id:</span> <span class="string">black</span></span><br><span class="line"><span class="comment"># 检测敏感信息（如密码hash）</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">repo:</span> <span class="string">https://github.com/Yelp/detect-secrets</span></span><br><span class="line">    <span class="attr">rev:</span> <span class="string">v1.5.0</span> <span class="comment">#版本自行修改</span></span><br><span class="line">    <span class="attr">hooks:</span></span><br><span class="line">    <span class="bullet">-</span>   <span class="attr">id:</span> <span class="string">detect-secrets</span></span><br><span class="line">        <span class="attr">args:</span> [<span class="string">--exclude-files</span>, <span class="string">&quot;package-lock.json|pnpm-lock.yaml|yarn.lock|pdm.lock&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>pre-commit 使用<strong>独立的隔离环境</strong>，与项目虚拟环境完全分离。如果 hook 需要额外依赖，需要在此声明：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">repo:</span> <span class="string">https://github.com/pre-commit/mirrors-mypy</span>  </span><br><span class="line">  <span class="attr">rev:</span> <span class="string">v1.8.0</span>  </span><br><span class="line">  <span class="attr">hooks:</span>  </span><br><span class="line">  <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">mypy</span>  </span><br><span class="line">    <span class="attr">additional_dependencies:</span>  </span><br><span class="line">    <span class="bullet">-</span> <span class="string">django-stubs</span>  </span><br><span class="line">    <span class="bullet">-</span> <span class="string">types-requests</span></span><br></pre></td></tr></table></figure>
+
+<p>同一阶段的 hooks 按<strong>定义顺序</strong>执行，所以通常把格式化工具放在检查工具之前。</p>
+<h2 id="远程仓库与本地仓库"><a href="#远程仓库与本地仓库" class="headerlink" title="远程仓库与本地仓库"></a>远程仓库与本地仓库</h2><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">repos:</span></span><br><span class="line">  <span class="comment"># 远程仓库：自动下载、隔离环境</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">repo:</span> <span class="string">https://github.com/psf/black</span></span><br><span class="line">    <span class="attr">rev:</span> <span class="number">24.3</span><span class="number">.0</span></span><br><span class="line">    <span class="attr">hooks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">black</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># 本地仓库：使用项目环境中的工具</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">repo:</span> <span class="string">local</span></span><br><span class="line">    <span class="attr">hooks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">pytest</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">pytest</span></span><br><span class="line">        <span class="attr">entry:</span> <span class="string">uv</span> <span class="string">run</span> <span class="string">pytest</span>          <span class="comment"># 使用本地安装的 pytest</span></span><br><span class="line">        <span class="attr">language:</span> <span class="string">system</span>              <span class="comment"># 使用系统命令</span></span><br><span class="line">        <span class="attr">stages:</span> [<span class="string">pre-push</span>]            <span class="comment"># 在 push 前运行</span></span><br><span class="line">        <span class="attr">pass_filenames:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">============ 安装/卸载 ============</span></span><br><span class="line">pre-commit install                    # 安装 hooks</span><br><span class="line">pre-commit uninstall                  # 卸载 hooks</span><br><span class="line">pre-commit install --hook-type pre-push  # 安装特定类型</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">============ 运行检查 ============</span></span><br><span class="line">pre-commit run --all-files            # 检查所有文件</span><br><span class="line">pre-commit run                        # 只检查暂存文件</span><br><span class="line">pre-commit run black --all-files      # 运行特定 hook</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">============ 维护 ============</span></span><br><span class="line">pre-commit autoupdate                 # 更新到最新版本</span><br><span class="line">pre-commit clean                      # 清除缓存</span><br><span class="line">pre-commit gc                         # 垃圾回收</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">============ 跳过检查（紧急情况）============</span></span><br><span class="line">git commit --no-verify -m &quot;紧急修复&quot;</span><br><span class="line">SKIP=flake8,mypy git commit -m &quot;跳过特定检查&quot;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">============ 调试 ============</span></span><br><span class="line">pre-commit run --hook-stage pre-commit --verbose</span><br></pre></td></tr></table></figure>
+
+<h1 id="集成到Github-workflow"><a href="#集成到Github-workflow" class="headerlink" title="集成到Github workflow"></a>集成到Github workflow</h1><p>在.github&#x2F;workflows新建一个yaml:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">pre-commit</span> <span class="string">modifications</span></span><br><span class="line"><span class="comment"># 推送到main分支时执行</span></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">branches:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">main</span></span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">lint:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">windows-latest</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/checkout@v3</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Set</span> <span class="string">up</span> <span class="string">Python</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">actions/setup-python@v4</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">python-version:</span> <span class="string">&#x27;3.10&#x27;</span></span><br><span class="line">        <span class="comment"># 安装pre-commit</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">pre-commit</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">pip</span> <span class="string">install</span> <span class="string">pre-commit</span></span><br><span class="line">        <span class="comment"># 执行pre-commit检查</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Run</span> <span class="string">pre-commit</span> <span class="string">checks</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">pre-commit</span> <span class="string">run</span> <span class="string">--all-files</span></span><br></pre></td></tr></table></figure>
+
+
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-blog-card trm-scroll-animation">
+        <a href="/2026/04/05/%E8%AE%B0%E4%B8%80%E6%AC%A1nonebot%E7%9A%84%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E7%BB%8F%E9%AA%8C/" class="trm-cover-frame trm-anima-link">
+            
+            
+                <img alt="cover" class="no-fancybox" src="https://github.com/nonebot/nonebug/raw/master/assets/logo.png">
+            
+        </a>
+        
+        <div class="trm-card-descr">
+            <div class="trm-label trm-category trm-mb-20">
+                <a href=" /categories/codes/">
+                    codes
+                </a>
+            </div>
+            <h5>
+                <a href="/2026/04/05/%E8%AE%B0%E4%B8%80%E6%AC%A1nonebot%E7%9A%84%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E7%BB%8F%E9%AA%8C/" class="trm-anima-link">
+                    记一次nonebot的单元测试经验
+                </a>
+            </h5>
+            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>26/04/05</li>
+                <li>00:48</li>
+                
+                
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v7.3.0
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                主题 - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.2.7
+            </span>
+        </div>
+      
+
+     
+
+     
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+            
+<div class="trm-fixed-container">
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.2.7"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.2.7"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>
